@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstring>
 
-#include "vec.hpp"
+#include "matrix.hpp"
 
 void    test_vec()
 {
