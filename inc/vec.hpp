@@ -15,6 +15,7 @@ struct vec
     vec(float x, float y) requires (N >= 2) : vec() {data[0] = x; data[1] = y;}
     vec(float x, float y, float z) requires (N >= 3) : vec() {data[0] = x; data[1] = y; data[2] = z;}
     vec(float x, float y, float z, float w) requires (N >= 4) : vec() {data[0] = x; data[1] = y; data[2] = z; data[3] = w;}
+    ~vec() {}
 
     bool    operator==(const vec<N, T>& b) const;
     bool    operator!=(const vec<N, T>& b) const {return (!(*this == b));};
