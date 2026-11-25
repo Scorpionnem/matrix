@@ -33,33 +33,33 @@ struct vec
     vec(const vec<NN, TT>& cpy) {for (std::size_t i = 0; i < std::min(N, NN); i++) data[i] = cpy.data[i];}
     ~vec() = default;
 
-    bool    operator==(const vec<N, T>& b) const;
-    bool    operator!=(const vec<N, T>& b) const {return (!(*this == b));};
+    bool    operator==(const vec& b) const;
+    bool    operator!=(const vec& b) const {return (!(*this == b));};
 
-    vec<N, T>   operator-() const {return (*this * -1);}
+    vec   operator-() const {return (*this * -1);}
 
-    vec<N, T>   operator+(const vec<N, T>& b) const;
-    vec<N, T>&  operator+=(const vec<N, T>& b);
-    vec<N, T>&  add(const vec<N, T>& b) {return (*this += b);}
+    vec   operator+(const vec& b) const;
+    vec&  operator+=(const vec& b);
+    vec&  add(const vec& b) {return (*this += b);}
 
-    vec<N, T>   operator-(const vec<N, T>& b) const;
-    vec<N, T>&  operator-=(const vec<N, T>& b);
-    vec<N, T>&  sub(const vec<N, T>& b) {return (*this -= b);}
+    vec   operator-(const vec& b) const;
+    vec&  operator-=(const vec& b);
+    vec&  sub(const vec& b) {return (*this -= b);}
 
-    vec<N, T>   operator*(const vec<N, T>& b) const;
-    vec<N, T>&  operator*=(const vec<N, T>& b);
-    vec<N, T>&  scl(const vec<N, T>& b) {return (*this *= b);}
+    vec   operator*(const vec& b) const;
+    vec&  operator*=(const vec& b);
+    vec&  scl(const vec& b) {return (*this *= b);}
 
-    vec<N, T>   operator/(const vec<N, T>& b) const;
-    vec<N, T>&  operator/=(const vec<N, T>& b);
-    vec<N, T>&  div(const vec<N, T>& b) {return (*this /= b);}
+    vec   operator/(const vec& b) const;
+    vec&  operator/=(const vec& b);
+    vec&  div(const vec& b) {return (*this /= b);}
 
-    static vec<N, T>   linear_combination(const std::vector<vec<N, T>>& vecs, const std::vector<T>& scls)
+    static vec   linear_combination(const std::vector<vec>& vecs, const std::vector<T>& scls)
     {
         if (vecs.size() != scls.size())
             throw std::runtime_error("arrays wrong size");
 
-        vec<N, T>   res;
+        vec   res;
 
         for (std::size_t i = 0; i < vecs.size(); i++)
             for (std::size_t j = 0; j < N; j++)
@@ -68,7 +68,7 @@ struct vec
         return (res);
     }
 
-	static constexpr T	length(const vec<N, T>& v)
+	static constexpr T	length(const vec& v)
 	{
 		T	acc = 0;
 
@@ -78,16 +78,16 @@ struct vec
 		return (std::sqrt(acc));
 	}
 
-	constexpr T	length() const {return (vec<N, T>::length(*this));}
+	constexpr T	length() const {return (vec::length(*this));}
 
 	constexpr T	norm_1() const {throw std::logic_error("vec::norm_1 not implemented");}
 	constexpr T	norm() const {throw std::logic_error("vec::norm not implemented");}
 	constexpr T	norm_inf() const {throw std::logic_error("vec::norm_inf not implemented");}
 
-	static constexpr T	angle_cos(const vec<N, T>& v1, const vec<N, T>& v2) {(void)v1; (void)v2; throw std::logic_error("vec::angle_cos not implemented");}
-	constexpr T	angle_cos(const vec<N, T>& v) const {return (vec<N, T>::angle_cos(*this, v));}
+	static constexpr T	angle_cos(const vec& v1, const vec& v2) {(void)v1; (void)v2; throw std::logic_error("vec::angle_cos not implemented");}
+	constexpr T	angle_cos(const vec& v) const {return (vec::angle_cos(*this, v));}
 
-	static constexpr T distance(const vec<N, T>& v1, const vec<N, T>& v2)
+	static constexpr T distance(const vec& v1, const vec& v2)
 	{
 		T value = 0.0;
 
@@ -97,30 +97,30 @@ struct vec
 		return (std::sqrt(value));
 	}
 
-	constexpr T	distance(const vec<N, T>& v) const
+	constexpr T	distance(const vec& v) const
 	{
-		return (vec<N, T>::distance(*this, v));
+		return (vec::distance(*this, v));
 	}
 
-	static constexpr vec<N, T>	normalize(const vec<N, T>& v)
+	static constexpr vec	normalize(const vec& v)
 	{
 		T	len = v.length();
 
-		return (len > 0 ? v / len : vec<N, T>(0));
+		return (len > 0 ? v / len : vec(0));
 	}
-	constexpr vec<N, T>	normalize() const {return (vec<N, T>::normalize(*this));}
+	constexpr vec	normalize() const {return (vec::normalize(*this));}
 
-	static constexpr vec<N, T>	cross(const vec<N, T>& v1, const vec<N, T>& v2) requires (N == 3)
+	static constexpr vec	cross(const vec& v1, const vec& v2) requires (N == 3)
 	{
-		return (vec<N, T>(
+		return (vec(
 			v1.y() * v2.z() - v1.z() * v2.y(),
 			v1.z() * v2.x() - v1.x() * v2.z(),
 			v1.x() * v2.y() - v1.y() * v2.x()
 		));
 	}
-	constexpr vec<N, T>	cross(const vec<N, T>& v) const requires (N == 3) {return (vec<N, T>::cross(*this, v));}
+	constexpr vec	cross(const vec& v) const requires (N == 3) {return (vec::cross(*this, v));}
 
-	static constexpr T	dot(const vec<N, T>& v1, const vec<N, T>& v2)
+	static constexpr T	dot(const vec& v1, const vec& v2)
 	{
 		T	acc = 0;
 
@@ -129,13 +129,13 @@ struct vec
 
 		return (acc);
 	}
-	constexpr T	dot(const vec<N, T>& v) const {return (vec<N, T>::dot(*this, v));}
+	constexpr T	dot(const vec& v) const {return (vec::dot(*this, v));}
 
-	static constexpr vec<N, T>	reflect(const vec<N, T>& v, const vec<N, T>& n)
+	static constexpr vec	reflect(const vec& v, const vec& n)
 	{
-		return (v - vec<N, T>(2.0) * vec<N, T>(dot(n, v)) * n);
+		return (v - vec(2.0) * vec(dot(n, v)) * n);
 	}
-	constexpr vec<N, T>	reflect(const vec<N, T>& n) const {return (vec<N, T>::reflect(*this, n));}
+	constexpr vec	reflect(const vec& n) const {return (vec::reflect(*this, n));}
 
     constexpr T&  x() requires (N >= 1) {return (data[0]);}
     constexpr T&  y() requires (N >= 2) {return (data[1]);}
@@ -196,7 +196,7 @@ bool vec<N, T>::operator==(const vec<N, T>& b) const
 template <std::size_t N, typename T>
 vec<N, T>    vec<N, T>::operator+(const vec<N, T>& b) const
 {
-    vec<N, T>   res;
+    vec   res;
 
     for (std::size_t i = 0; i < N; i++)
         res.data[i] = data[i] + b.data[i];
