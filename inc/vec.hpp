@@ -80,9 +80,38 @@ struct vec
 
 	constexpr T	length() const {return (vec::length(*this));}
 
-	constexpr T	norm_1() const {throw std::logic_error("vec::norm_1 not implemented");}
-	constexpr T	norm() const {throw std::logic_error("vec::norm not implemented");}
-	constexpr T	norm_inf() const {throw std::logic_error("vec::norm_inf not implemented");}
+	constexpr T	norm_1() const
+	{
+		T	res = {};
+
+		for (std::size_t i = 0; i < N; i++)
+			res += data[i] < 0 ? -data[i] : data[i];
+
+		return (res);
+	}
+	constexpr T	norm() const
+	{
+		T	acc = 0;
+
+		for (std::size_t i = 0; i < N; i++)
+			acc += data[i] * data[i];
+
+		return (std::pow(acc, 0.5));
+	}
+	constexpr T	norm_inf() const
+	{
+		auto abs = [](T v){return (v < 0 ? -v : v);};
+
+		T	res = {};
+
+		for (std::size_t i = 0; i < N; i++)
+		{
+			T	v = abs(data[i]);
+			if (v > res)
+				res = v;
+		}
+		return (res);
+	}
 
 	static constexpr T	angle_cos(const vec& v1, const vec& v2) {(void)v1; (void)v2; throw std::logic_error("vec::angle_cos not implemented");}
 	constexpr T	angle_cos(const vec& v) const {return (vec::angle_cos(*this, v));}
