@@ -152,7 +152,21 @@ struct	mat
 
 	mat	row_echelon() const {throw std::logic_error("mat::row_echelon not implemented");}
 
-	T	determinant() const requires (C == R) {throw std::logic_error("mat::determinant not implemented");}
+	T	determinant() const requires (C == R && C == 2)
+	{
+		const mat&	m = *this;
+		return (m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1));
+	}
+	T	determinant() const requires (C == R && C == 3)
+	{
+		const mat&	m = *this;
+		return (m(0, 0) * m(1, 1) * m(2, 2)
+              + m(1, 0) * m(2, 1) * m(0, 2)
+              + m(2, 0) * m(0, 1) * m(1, 2)
+              - m(2, 0) * m(1, 1) * m(0, 2)
+              - m(1, 0) * m(0, 1) * m(2, 2)
+              - m(0, 0) * m(2, 1) * m(1, 2));
+	}
 
 	mat	inverse() const requires (C == R) {throw std::logic_error("mat::inverse not implemented");}
 

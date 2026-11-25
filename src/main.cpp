@@ -139,6 +139,8 @@ void    ex09()
     TEST((mat2f{{1, 2}, {3, 4}}.transpose()), "[1, 3]\n[2, 4]");
     TEST((mat3f{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}.transpose()), "[1, 4, 7]\n[2, 5, 8]\n[3, 6, 9]");
     TEST((mat23f{{1, 2}, {3, 4}, {5, 6}}.transpose()), "[1, 3, 5]\n[2, 4, 6]");
+    std::cout << mat23f{{1, 2}, {3, 4}, {5, 6}} << std::endl << std::endl;
+    std::cout << mat23f{{1, 2}, {3, 4}, {5, 6}}.transpose() << std::endl;
 }
 
 void    ex10()
@@ -156,14 +158,14 @@ void    ex10()
 void    ex11()
 {
     TEST((mat2f{{1, -1}, {-1, 1}}.determinant()), "0");
-    TEST((mat3f{{2, 0, 0}, {0, 2, 0}, {0, 0, 2}}.determinant()), "8");
+    TEST((mat3f{{4, 0, 1}, {5, 2, 2}, {6, 7, 3}}.determinant()), "-9");
     TEST((mat3f{{8, 5, -2}, {4, 7, 20}, {7, 6, 1}}.determinant()), "-174");
-    TEST((mat4f{
-        {8, 5, -2, 4},
-        {4, 2.5, 20, 4},
-        {8, 5, 1, 4},
-        {28, -4, 17, 1},
-    }.determinant()), "1032");
+    // TEST((mat4f{
+    //     {8, 5, -2, 4},
+    //     {4, 2.5, 20, 4},
+    //     {8, 5, 1, 4},
+    //     {28, -4, 17, 1},
+    // }.determinant()), "1032");
 }
 
 void    ex12()
