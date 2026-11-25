@@ -113,7 +113,7 @@ struct vec
 		return (res);
 	}
 
-	static constexpr T	angle_cos(const vec& v1, const vec& v2) {(void)v1; (void)v2; throw std::logic_error("vec::angle_cos not implemented");}
+	static constexpr T	angle_cos(const vec& v1, const vec& v2) {return (vec::dot(v1, v2) / (v1.norm() * v2.norm()));}
 	constexpr T	angle_cos(const vec& v) const {return (vec::angle_cos(*this, v));}
 
 	static constexpr T distance(const vec& v1, const vec& v2)
