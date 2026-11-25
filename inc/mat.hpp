@@ -109,7 +109,10 @@ struct	mat
     }
 	mat&	scl(T s) {return (*this *= s);}
 
-	vec<R, T>	operator*(const vec<C, T>& v) const {(void)v; throw std::logic_error("mat::operator*(vec) not implemented");}
+	vec<R, T>	operator*(const vec<C, T>& v) const
+	{
+		(void)v; throw std::logic_error("mat::operator*(vec) not implemented");
+	}
 
 	template <std::size_t K>
 	mat<K, R, T>	operator*(const mat<K, C, T>& m) const
@@ -128,9 +131,24 @@ struct	mat
 		return (res);
 	}
 
-	T	trace() const requires (C == R) {throw std::logic_error("mat::trace not implemented");}
+	T	trace() const requires (C == R)
+	{
+		T	res = {};
 
-	mat<R, C, T>	transpose() const {throw std::logic_error("mat::transpose not implemented");}
+		for (std::size_t d = 0; d < R; d++)
+			res += (*this)(d, d);
+		return (res);
+	}
+
+	mat<R, C, T>	transpose() const
+	{
+		mat<R, C, T>	res;
+
+		for (std::size_t col = 0; col < C; col++)
+			for (std::size_t row = 0; row < R; row++)
+				res(row, col) = (*this)(col, row);
+		return (res);
+	}
 
 	mat	row_echelon() const {throw std::logic_error("mat::row_echelon not implemented");}
 
