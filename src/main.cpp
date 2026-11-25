@@ -139,8 +139,6 @@ void    ex09()
     TEST((mat2f{{1, 2}, {3, 4}}.transpose()), "[1, 3]\n[2, 4]");
     TEST((mat3f{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}.transpose()), "[1, 4, 7]\n[2, 5, 8]\n[3, 6, 9]");
     TEST((mat23f{{1, 2}, {3, 4}, {5, 6}}.transpose()), "[1, 3, 5]\n[2, 4, 6]");
-    std::cout << mat23f{{1, 2}, {3, 4}, {5, 6}} << std::endl << std::endl;
-    std::cout << mat23f{{1, 2}, {3, 4}, {5, 6}}.transpose() << std::endl;
 }
 
 void    ex10()
