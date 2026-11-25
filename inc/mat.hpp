@@ -58,16 +58,55 @@ struct	mat
 		return (res);
 	}
 
-	mat		operator+(const mat& m) const {(void)m; throw std::logic_error("mat::operator+ not implemented");}
-	mat&	operator+=(const mat& m) {(void)m; throw std::logic_error("mat::operator+= not implemented");}
+	mat		operator+(const mat& m) const
+	{
+		mat	res;
+
+		for (std::size_t row = 0; row < R; row++)
+			for (std::size_t col = 0; col < C; col++)
+				res(col, row) = (*this)(col, row) + m(col, row);
+
+		return (res);
+	}
+	mat&	operator+=(const mat& m)
+	{
+		*this = *this + m;
+    	return (*this);
+    }
 	mat&	add(const mat& m) {return (*this += m);}
 
-	mat		operator-(const mat& m) const {(void)m; throw std::logic_error("mat::operator- not implemented");}
-	mat&	operator-=(const mat& m) {(void)m; throw std::logic_error("mat::operator-= not implemented");}
+	mat		operator-(const mat& m) const
+	{
+		mat	res;
+
+		for (std::size_t row = 0; row < R; row++)
+			for (std::size_t col = 0; col < C; col++)
+				res(col, row) = (*this)(col, row) - m(col, row);
+
+		return (res);
+	}
+	mat&	operator-=(const mat& m)
+	{
+		*this = *this - m;
+    	return (*this);
+    }
 	mat&	sub(const mat& m) {return (*this -= m);}
 
-	mat		operator*(T s) const {(void)s; throw std::logic_error("mat::operator*(scalar) not implemented");}
-	mat&	operator*=(T s) {(void)s; throw std::logic_error("mat::operator*=(scalar) not implemented");}
+	mat		operator*(T s) const
+	{
+		mat	res;
+
+		for (std::size_t row = 0; row < R; row++)
+			for (std::size_t col = 0; col < C; col++)
+				res(col, row) = (*this)(col, row) * s;
+
+		return (res);
+	}
+	mat&	operator*=(T s)
+	{
+		*this = *this * s;
+    	return (*this);
+    }
 	mat&	scl(T s) {return (*this *= s);}
 
 	vec<R, T>	operator*(const vec<C, T>& v) const {(void)v; throw std::logic_error("mat::operator*(vec) not implemented");}
