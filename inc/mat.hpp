@@ -111,7 +111,13 @@ struct	mat
 
 	vec<R, T>	operator*(const vec<C, T>& v) const
 	{
-		(void)v; throw std::logic_error("mat::operator*(vec) not implemented");
+    	vec<R, T>	res;
+
+        for (std::size_t row = 0; row < R; row++)
+           	for (std::size_t col = 0; col < C; col++)
+                res.data[row] += (*this)(col, row) * v.data[col];
+
+    	return (res);
 	}
 
 	template <std::size_t K>

@@ -219,7 +219,7 @@ const std::map<std::string, std::function<void(void)>>    funcs = {
     {"ex14", ex14},
 };
 
-static void run(const std::string& name, const std::function<void(void)>& f)
+static int run(const std::string& name, const std::function<void(void)>& f)
 {
     std::cout << "===== " << name << " =====\n" << std::endl;
     try
@@ -229,7 +229,9 @@ static void run(const std::string& name, const std::function<void(void)>& f)
     catch (const std::exception& e)
     {
         std::cout << "!! " << e.what() << '\n' << std::endl;
+        return (0);
     }
+    return (1);
 }
 
 int main(int ac, char **av)
@@ -243,7 +245,8 @@ int main(int ac, char **av)
     if (std::string(av[1]) == "all")
     {
         for (const auto& [name, f] : funcs)
-            run(name, f);
+            if (!run(name, f))
+                return (1);
         return (0);
     }
 
