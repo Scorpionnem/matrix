@@ -3,6 +3,7 @@
 #include <initializer_list>
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 #include "math.hpp"
 
 /*
@@ -156,22 +157,99 @@ struct	mat
 		return (res);
 	}
 
-	mat	row_echelon() const {throw std::logic_error("mat::row_echelon not implemented");}
+	mat	row_echelon() const
+	{
+    	mat res = *this;
+        std::size_t pivot_row = 0;
 
-	T	determinant() const requires (C == R && C == 2)
-	{
-		const mat&	m = *this;
-		return (m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1));
+        for (std::size_t col = 0; col < C && pivot_row < R; col++)
+        {
+            std::size_t r = pivot_row;
+            T largest = std::abs(res(col, pivot_row));
+
+            for (std::size_t row = pivot_row + 1; row < R; row++)
+            {
+                T v = std::abs(res(col, row));
+                if (v > largest)
+                {
+                    largest = v;
+                    r = row;
+                }
+            }
+
+            if (largest == 0)
+                continue ;
+
+            if (r != pivot_row)
+                for (std::size_t c = 0; c < C; c++)
+                    std::swap(res(c, pivot_row), res(c, r));
+
+            T pivot = res(col, pivot_row);
+            for (std::size_t c = 0; c < C; c++)
+                res(c, pivot_row) /= pivot;
+
+            for (std::size_t row = 0; row < R; row++)
+            {
+                if (row == pivot_row)
+                    continue ;
+                T factor = res(col, row);
+                for (std::size_t c = 0; c < C; c++)
+                    res(c, row) -= factor * res(c, pivot_row);
+            }
+
+            pivot_row++;
+        }
+        return (res);
 	}
-	T	determinant() const requires (C == R && C == 3)
+
+	T	determinant() const requires (C == R)
 	{
-		const mat&	m = *this;
-		return (m(0, 0) * m(1, 1) * m(2, 2)
-              + m(1, 0) * m(2, 1) * m(0, 2)
-              + m(2, 0) * m(0, 1) * m(1, 2)
-              - m(2, 0) * m(1, 1) * m(0, 2)
-              - m(1, 0) * m(0, 1) * m(2, 2)
-              - m(0, 0) * m(2, 1) * m(1, 2));
+	    T   det = 1;
+	    mat res = *this;
+        std::size_t pivot_row = 0;
+
+        for (std::size_t col = 0; col < C && pivot_row < R; col++)
+        {
+            std::size_t r = pivot_row;
+            T largest = std::abs(res(col, pivot_row));
+
+            for (std::size_t row = pivot_row + 1; row < R; row++)
+            {
+                T v = std::abs(res(col, row));
+                if (v > largest)
+                {
+                    largest = v;
+                    r = row;
+                }
+            }
+
+            if (largest == 0)
+                return (0);
+
+            if (r != pivot_row)
+            {
+                det = -det;
+                for (std::size_t c = 0; c < C; c++)
+                    std::swap(res(c, pivot_row), res(c, r));
+            }
+
+            T pivot = res(col, pivot_row);
+            det *= pivot;
+            for (std::size_t c = 0; c < C; c++)
+                res(c, pivot_row) /= pivot;
+
+            for (std::size_t row = 0; row < R; row++)
+            {
+                if (row == pivot_row)
+                    continue ;
+                T factor = res(col, row);
+                for (std::size_t c = 0; c < C; c++)
+                    res(c, row) -= factor * res(c, pivot_row);
+            }
+
+            pivot_row++;
+        }
+		return (det);
 	}
 
 	mat	inverse() const requires (C == R) {throw std::logic_error("mat::inverse not implemented");}
